@@ -1,11 +1,11 @@
 import golosinas.*
 
 object mariano {
-	var golosinas = []
+	const golosinas = []
 	 
 	method comprar(_golosina) { golosinas.add(_golosina) }
 	
-	method desechar (_golosina) { golosinas.remove(_golosina) }
+	method desechar(_golosina) { golosinas.remove(_golosina) }
 	
 	method golosinas() { return golosinas }
 	method primerGolosina() { return golosinas.first() }
@@ -62,6 +62,11 @@ object mariano {
 	
 	method tieneGolosinaDeSabor(_sabor) {
 		return golosinas.any({_golosina => _golosina.sabor() == _sabor})
+	}
+	
+	method baniar(unaGolosina){
+		if ( golosinas.contains(unaGolosina) ){ self.desechar(unaGolosina)}
+		golosinas.add(new GolosinaBaniada(golosinaInterior = unaGolosina))
 	}
 }
 

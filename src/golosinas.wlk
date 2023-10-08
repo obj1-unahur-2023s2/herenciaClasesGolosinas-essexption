@@ -1,3 +1,5 @@
+import mariano.*
+
 /*
  * Los sabores
  */
@@ -80,16 +82,29 @@ class Chocolatin inherits Golosina{
 	// el precio se calcula a partir del precio inicial
 	// el mordisco afecta al peso actual
 	var pesoInicial
-	var comido = 0
+	var consumido = 0
 	
 	method pesoInicial(unPeso) { pesoInicial = unPeso }
 	override method precio() { return pesoInicial * 0.50 }
-	override method peso() { return (pesoInicial - comido).max(0) }
-	method mordisco() { comido = comido + 2 }
+	override method peso() { return (pesoInicial - consumido).max(0) }
+	method mordisco() { consumido = consumido + 2 }
 	override method sabor() = chocolate
 	method libreGluten() { return false }
 
 }
+
+class ChocolatinVIP inherits Chocolatin{
+	var humedad 
+	
+	method humedad() = humedad
+	
+	override method peso() = super()*(1+self.humedad())
+}
+
+class ChocolatinPremium inherits ChocolatinVIP{
+	override method humedad() = super()/2
+}
+
 
 class GolosinaBaniada inherits Golosina{
 	var golosinaInterior
@@ -109,7 +124,7 @@ class GolosinaBaniada inherits Golosina{
 
 class Tuttifrutti inherits Golosina{
 	var libreDeGluten
-	var sabores = [frutilla, chocolate, naranja]
+	const sabores = [frutilla, chocolate, naranja]
 	var saborActual = 0
 	
 	method mordisco() { saborActual += 1 }	
@@ -150,11 +165,13 @@ class CarameloRelleno inherits Caramelo{
 }
 
 class ObleaCrujiente inherits Oblea{
+	var cantMordiscos = 0
+	
 	override method mordisco(){
-		var cantMordisco = 0
 		super()
-		cantMordisco += 1
-		if (cantMordisco.between(1,3)) {0.max(peso-3)}
-	}	
+		cantMordiscos += 1
+		if (cantMordiscos.between(1,3)) {0.max(peso-3)}
+	}
+	method estaDebil() = cantMordiscos > 3	
 }
 
